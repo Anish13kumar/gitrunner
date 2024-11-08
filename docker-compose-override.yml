@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  vpn:
+    image: registry.gitlab.com/ysctl/vpn-server:classA
+    container_name: wireguard
+    networks:
+      wireguard-vpn:
+        aliases:
+          - wireguard
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 41194:41194/udp  # WireGuard port
+    hostname: wireguard
+    environment:
+      ENDPOINT: 192.168.1.91  # Replace with your server's public IP
+      SERVER_PORT: 41194  # WireGuard port
+      SERVER_IP: 10.5.0.1/16
+      ALLOWED_IPS: 10.5.0.0/16
+    volumes:
+      - wg_data:/etc/wireguard
+
+networks:
+  wireguard-vpn:
+
+volumes:
+  wg_data:

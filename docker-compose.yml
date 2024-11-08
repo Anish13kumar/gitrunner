@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  gitlab-build:
+    image: gitrunner-docker:latest
+    container_name: gitlab-build
+    restart: always
+    hostname: build
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab-runner-build-config:/etc/gitlab-runner
+      - /home/dockerlabs/.ssh/:/home/gitlab-runner/.ssh
+  gitlab-prod:
+    image: gitrunner-docker:latest
+    container_name: gitlab-prod
+    restart: always
+    hostname: production 
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab-runner-prod-config:/etc/gitlab-runner
+      - /home/dockerlabs/.ssh/:/home/gitlab-runner/.ssh
+
+volumes:
+  gitlab-runner-build-config:
+  gitlab-runner-prod-config:
+
